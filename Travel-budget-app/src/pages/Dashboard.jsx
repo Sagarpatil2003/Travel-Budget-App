@@ -1,7 +1,7 @@
 import React from 'react';
 import Charts from '../components/Charts';
 import Notifications from '../components/Notifications';
-
+import '../styles.css'
 function Dashboard() {
   return (
     

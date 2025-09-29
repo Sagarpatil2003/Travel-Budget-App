@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store/store';
+import Dashboard from './pages/Dashboard';
+import ExpenseTracker from './pages/ExpenseTracker';
+import LoginForm from './components/LoginForm';
+import LogoutButton from './components/LogoutButton';
+import PrivateRoute from './components/PrivateRoute';
+import AuthListener from './components/AuthListener';
+import './styles.css'
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Provider store={store}>
+        <AuthListener />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/tracker" element={
+            <PrivateRoute>
+              <>
+                <LogoutButton />
+                <ExpenseTracker />
+              </>
+            </PrivateRoute>
+          } />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  );
 }
-
-export default App
+export default App;
